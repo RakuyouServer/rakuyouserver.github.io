@@ -1,12 +1,13 @@
 import type {Theme} from "@/assets/themes/theme.ts"
 import {commonThemeConfig} from "@/assets/themes/theme.ts"
 import {theme} from "ant-design-vue"
+import type {ThemeConfig} from "ant-design-vue/es/config-provider/context";
 
 const colorPrimary = '#0ac7dd';
 
 export class DarkTheme implements Theme {
   name: string = 'dark'
-  common = {
+  common: ThemeConfig = {
     algorithm: theme.darkAlgorithm,
     token: {
       ...commonThemeConfig,

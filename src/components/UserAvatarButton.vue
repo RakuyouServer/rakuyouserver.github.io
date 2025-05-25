@@ -10,13 +10,20 @@
         <a-card
             class="avatar-card"
             size="small"
+            :style="cardStyle"
         >
+          <a-flex justify="center" style="font-size: 18px; margin-bottom: 8px">
+            {{ userStore.info?.nickname }}
+          </a-flex>
+
           <a-space direction="vertical" style="width: 100%">
+
             <!--个人中心按钮-->
             <a-button
                 class="avatar-card__function-button"
                 type="text"
                 block
+                @click="router.push({name: 'personal-center-view'})"
             >
               <a-flex>
                 <UserOutlined/>
@@ -36,7 +43,7 @@
             >
               <a-flex>
                 <LogoutOutlined/>
-                <div style="margin-left: 8px; width: 100%">退出登录</div>
+                <div style="margin-left: 8px; width: 100%">{{ '退出登录' }}</div>
                 <RightOutlined/>
               </a-flex>
             </a-button>
@@ -49,6 +56,7 @@
         ref="avatarAnime"
         class="avatar-anime"
         size="large"
+        :src="userStore.info.avatarUrl"
         @mouseenter="onHoverAvatar"
         @mouseleave="onLeaveAvatar"
     >
@@ -60,6 +68,7 @@
         ref="avatarFixed"
         class="avatar-fixed"
         size="large"
+        :src="userStore.info.avatarUrl"
         @mouseenter="onHoverAvatar"
         @mouseleave="onLeaveAvatar"
     >
@@ -71,12 +80,22 @@
 </template>
 
 <script setup lang="ts">
-import {ref, shallowRef, watch} from "vue";
+import {computed, type CSSProperties, ref, shallowRef, watch} from "vue";
+import {message} from 'ant-design-vue';
 import {LogoutOutlined, RightOutlined, UserOutlined} from "@ant-design/icons-vue";
 import {logout} from "@/services/auth.ts";
 import {useRouter} from "vue-router";
+import {useThemeStore, useUserStore} from "@/stores";
+import {hexToRgba} from "@/utils/colorUtils.ts";
 
 const router = useRouter();
+
+const themeStore = useThemeStore();
+const cardStyle = computed<CSSProperties>(() => ({
+  background: hexToRgba(themeStore.theme?.common.token?.colorBgContainer ?? '#ffffff', 0.85),
+}));
+
+const userStore = useUserStore();
 
 const avatarAnime = shallowRef();
 const avatarFixed = shallowRef();
@@ -139,6 +158,7 @@ const onLeaveAvatar = () => {
 
 const handleLogout = async () => {
   await logout().finally(() => {
+    message.success('登出成功');
     router.push({name: 'login-page'});
   });
 }
@@ -152,19 +172,18 @@ const handleLogout = async () => {
 
 .avatar-card {
   width: 300px;
-  padding: 36px 10px 8px 10px;
+  padding: 28px 10px 8px 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .avatar-card__function-button {
   height: 40px;
   text-align: start;
-  color: gray;
 }
 
 .avatar-anime, .avatar-fixed {
   background: #9f9f9f;
-  border: 1px solid #727272;
+  border: 0.04em solid #727272;
   cursor: pointer;
 }
 
@@ -196,5 +215,4 @@ const handleLogout = async () => {
   opacity: 1;
   transform: translate(-140px, 60px);
 }
-
 </style>

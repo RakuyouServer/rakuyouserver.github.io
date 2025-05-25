@@ -1,11 +1,12 @@
 import type {Theme} from "@/assets/themes/theme.ts"
 import {commonThemeConfig} from "@/assets/themes/theme.ts"
+import type {ThemeConfig} from "ant-design-vue/es/config-provider/context";
 
 const colorPrimary = '#0cbccf';
 
 export class LightTheme implements Theme {
   name: string = 'light'
-  common = {
+  common: ThemeConfig = {
     token: {
       ...commonThemeConfig,
       colorPrimary: colorPrimary,

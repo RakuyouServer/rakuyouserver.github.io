@@ -1,6 +1,8 @@
+import type {ThemeConfig} from "ant-design-vue/es/config-provider/context";
+
 export interface Theme {
   name: string,
-  common: object,
+  common: ThemeConfig,
   topBar: {
     colorBg: string,
   },
@@ -10,8 +12,8 @@ export interface Theme {
 }
 
 export const commonThemeConfig = {
-  borderRadius: '10px',
-  borderRadiusLG: '10px',
-  borderRadiusSM: '4px',
-  borderRadiusXS: '2px',
+  borderRadius: 10,
+  borderRadiusLG: 10,
+  borderRadiusSM: 4,
+  borderRadiusXS: 2,
 };

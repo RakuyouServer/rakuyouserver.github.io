@@ -42,7 +42,7 @@ const handleClick = (event: MouseEvent) => {
 }
 
 .topbar-button__icon {
-  margin-bottom: -4px;
+  margin-bottom: -6px;
 }
 
 .topbar-button--clicked {
@@ -54,7 +54,7 @@ const handleClick = (event: MouseEvent) => {
     transform: translateY(0);
   }
   60% {
-    transform: translateY(-4px);
+    transform: translateY(-2px);
   }
   100% {
     transform: translateY(0);

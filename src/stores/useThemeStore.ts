@@ -2,13 +2,12 @@ import {defineStore} from "pinia"
 import {computed, ref} from "vue"
 import type {Theme} from "@/assets/themes";
 import {DarkTheme, LightTheme} from "@/assets/themes";
-import type {ThemeConfig} from "ant-design-vue/es/config-provider/context";
 
 export const useThemeStore = defineStore("theme-store", () => {
   const themes = ref<Theme[]>([]);
   const theme = ref<Theme>(LightTheme.instance);
   const themeName = computed(() => theme.value?.name);
-  const themeToken = computed(() => (theme.value?.common as ThemeConfig).token);
+  const themeToken = computed(() => theme.value?.common.token);
 
   const init = () => {
     loadTheme(LightTheme.instance);

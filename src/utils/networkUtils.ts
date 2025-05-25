@@ -17,7 +17,6 @@ const createAuthInstance = () => {
   // 请求拦截器
   instance.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
     let token: AccessTokenEntity | null = accessToken.value;
-
     if (!token || isAccessTokenExpired()) {
       if (!isRefreshing) {
         isRefreshing = true;
@@ -35,7 +34,6 @@ const createAuthInstance = () => {
             throw error;
           });
       }
-
       try {
         const newToken = await refreshPromise!;
         config.headers = {
@@ -45,6 +43,7 @@ const createAuthInstance = () => {
       } catch (e) {
         return Promise.reject(e);
       }
+
     } else {
       config.headers = {
         ...config.headers,

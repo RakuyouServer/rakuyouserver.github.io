@@ -2,39 +2,45 @@ import {axiosAuthorized, axiosUnauthorized} from "@/utils/networkUtils.ts";
 import type {AccessTokenEntity, LoginRequest, RegisterRequest} from "@/types/auth.ts";
 import {ref} from "vue";
 
+const baseUrl = '/auth';
+
 export const refresh = () => new Promise<AccessTokenEntity>((resolve, reject) =>
   axiosUnauthorized.post<AccessTokenEntity>(
-    '/auth/refresh'
+    `${baseUrl}/refresh`
   ).then(({data}) => {
     setAccessToken(getAccessTokenStorage(), data);
     resolve(data);
   }).catch(err => {
     clearAccessToken();
     reject(err);
-  }));
+  })
+);
 
 export const login = (form: LoginRequest) => new Promise<AccessTokenEntity>((resolve, reject) =>
   axiosUnauthorized.postForm<AccessTokenEntity>(
-    '/auth/login',
+    `${baseUrl}/login`,
     form,
   ).then(({data}) => {
     setAccessToken(form.remember ? localStorage : sessionStorage, data);
     resolve(data);
-  }).catch(error => {
+  }).catch(err => {
     clearAccessToken();
-    reject(error);
-  }));
+    reject(err);
+  })
+);
 
 export const logout = () => new Promise<string>((resolve, reject) =>
   axiosAuthorized.post<string>(
-    '/auth/logout',
-  ).then(({data}) => resolve(data)).catch(reject).finally(clearAccessToken));
+    `${baseUrl}/logout`,
+  ).then(({data}) => resolve(data)).catch(reject).finally(clearAccessToken)
+);
 
 export const register = (form: RegisterRequest) => new Promise<string>((resolve, reject) =>
   axiosUnauthorized.post<string>(
-    '/auth/register',
+    `${baseUrl}/register`,
     form,
-  ).then(({data}) => resolve(data)).catch(reject));
+  ).then(({data}) => resolve(data)).catch(reject)
+);
 
 const getAccessToken = (): AccessTokenEntity | null => {
   const tokenEntity = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
